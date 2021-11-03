@@ -12,9 +12,13 @@ class SearchCity extends StatefulWidget {
 class _SearchCityState extends State<SearchCity> {
   var _searchController = TextEditingController();
   WeatherOb? weath;
+  bool isLoading = false;
+  String? error;
 
   getSearch(String getName) async {
-    print(getName);
+    setState(() {
+      isLoading = true;
+    });
     var response = await http.get(
       Uri.parse("$URL?q=$getName&appid=$APPID&units=metric"),
     );
@@ -24,18 +28,28 @@ class _SearchCityState extends State<SearchCity> {
         weath = WeatherOb.fromMap(
           json.decode(response.body),
         );
+        isLoading = false;
+        error = null;
       });
     } else {
-      print('Unauthorized');
+      setState(() {
+        isLoading = false;
+        error = "Something's Wrong!";
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    int hour = DateTime.now().hour;
+    bool isNight = true;
+    if(hour>=5&&hour<=18){
+      isNight = false;
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(children: [
-        Image.asset('images/img.png',
+        Image.asset(isNight?'images/img_13':'images/img_11.png',
             fit: BoxFit.cover, height: double.infinity,width: double.infinity),
         Positioned(
           top: 30,
@@ -67,18 +81,18 @@ class _SearchCityState extends State<SearchCity> {
                               hintStyle: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w300,
-                                color: Colors.grey[600],
+                                color: Colors.grey[500],
                                 letterSpacing: 4.5,
                               )),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey[400],
+                            color: Colors.grey[350],
                             fontSize: 20,
                             letterSpacing: 2.0,
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       IconButton(
                         onPressed: () {
 
@@ -96,6 +110,11 @@ class _SearchCityState extends State<SearchCity> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 50),
+                isLoading?const Center(
+                  child: CircularProgressIndicator(),
+                ):
+                error!=null?Text(error.toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400,color: Colors.grey[300],letterSpacing: 3.0)):
                 weath == null
                     ? Container()
                     : Padding(
@@ -147,7 +166,7 @@ class _SearchCityState extends State<SearchCity> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 2.0,
-                                      color: Colors.grey[500]),
+                                      color: Colors.grey[350]),
                                 ),
                               ),
                               SizedBox(height: 10.0),
@@ -160,7 +179,7 @@ class _SearchCityState extends State<SearchCity> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 2.0,
-                                      color: Colors.grey[500]),
+                                      color: Colors.grey[350]),
                                 ),
                               ),
                               SizedBox(height: 10.0),
@@ -173,7 +192,7 @@ class _SearchCityState extends State<SearchCity> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 2.0,
-                                      color: Colors.grey[500]),
+                                      color: Colors.grey[350]),
                                 ),
                               ),
                               SizedBox(height: 10.0),
@@ -186,7 +205,7 @@ class _SearchCityState extends State<SearchCity> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 2.0,
-                                      color: Colors.grey[500]),
+                                      color: Colors.grey[350]),
                                 ),
                               ),
                               SizedBox(height: 10.0),
@@ -198,7 +217,7 @@ class _SearchCityState extends State<SearchCity> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 2.0,
-                                      color: Colors.grey[500]),
+                                      color: Colors.grey[350]),
                                 ),
                               ),
                               SizedBox(height: 10.0),
@@ -210,7 +229,7 @@ class _SearchCityState extends State<SearchCity> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 2.0,
-                                      color: Colors.grey[500]),
+                                      color: Colors.grey[350]),
                                 ),
                               ),
                             ],

@@ -59,6 +59,9 @@ class _HomePageState extends State<HomePage> {
       });
     } else {
       print('error');
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -71,18 +74,19 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading?Center(child: CircularProgressIndicator()):Scaffold(
-        // appBar: AppBar(
-        //   title: Text('Weather App'),
-        //   centerTitle: true,
-        // ),
-      drawer: Drawer(),
-        body: Container(
+
+    int hour = DateTime.now().hour;
+    bool isNight = true;
+    if(hour>=5&&hour<=18){
+      isNight = false;
+    }
+    return Scaffold(
+        body: isLoading?Center(child: CircularProgressIndicator()):Container(
       height: double.infinity,
       width: double.infinity,
       child: Stack(
         children: [
-          Image.asset('images/img_3.png',fit: BoxFit.cover,height: double.infinity),
+          Image.asset(isNight?'images/img_13':'images/img_11.png',fit: BoxFit.cover,height: double.infinity),
           Positioned(
             top: 60,
             left: 30,
@@ -94,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[400],
+                      color: Colors.grey[350],
                       letterSpacing: 3.0),
                 ),
                 SizedBox(height: 13.0),
@@ -103,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[400],
+                      color: Colors.grey[350],
                       letterSpacing: 2.0),
                 ),
                 SizedBox(height: 13.0),
@@ -112,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      color: Colors.grey[400],
+                      color: Colors.grey[350],
                       letterSpacing: 2.0),
                 ),
                 SizedBox(height: 15.0),
@@ -125,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text('7 Days Forecast',
                   style: TextStyle(
                       fontSize: 18,
-                      color: Colors.grey[400],
+                      color: Colors.grey[350],
                     decoration: TextDecoration.underline),),),
               ],
             ),
@@ -141,14 +145,14 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 35,
-                        color: Colors.grey[400],
+                        color: Colors.grey[350],
                         letterSpacing: 2.0),
                   ),
                   Row(
                     children: [
                       Container(
-                        width: 70,
-                        height: 70,
+                        width: 100,
+                        height: 100,
                         child: Image.network(
                             'http://openweathermap.org/img/wn/${weath!.weather[0].icon}@2x.png'),
                       ),
@@ -157,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey[400],
+                            color: Colors.grey[350],
                             letterSpacing: 2.0),
                       ),
                     ],
@@ -172,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                 return SearchCity();
               }),);
             },
-              icon: Icon(Icons.search),iconSize: 30,color: Colors.grey[400],),),
+              icon: Icon(Icons.search),iconSize: 30,color: Colors.grey[300],),),
         ],
       ),
     ));
