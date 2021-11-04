@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
       isNight = false;
     }
     return Scaffold(
-        body: isLoading?Center(child: CircularProgressIndicator()):Container(
+        body: isLoading?const Center(child: CircularProgressIndicator()):Container(
       height: double.infinity,
       width: double.infinity,
       child: Stack(
@@ -126,11 +126,21 @@ class _HomePageState extends State<HomePage> {
                       return ForeCast(lat,lon);
                     }));
                   },
-                  child: Text('7 Days Forecast',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey[350],
-                    decoration: TextDecoration.underline),),),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.chevron_left,size: 30,color: Colors.grey[300],),
+                      SizedBox(width: 5.0),
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        child: Text('7 Days Forecast',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[400]),),
+                      ),
+                    ],
+                  ),),
               ],
             ),
           ),
